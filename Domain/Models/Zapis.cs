@@ -17,6 +17,8 @@ public abstract class Zapis
     public StatusPodsjetnika status { get; private set; } = StatusPodsjetnika.iskljucen;
     public abstract TipZapisa tip { get; }
 
+    public abstract string? ProvjeraZasebnih();
+
     public abstract bool KojaOsoba(string imeOsobe);
 
     public bool ukljuciPodsjetnik() {

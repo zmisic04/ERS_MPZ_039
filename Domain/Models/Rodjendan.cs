@@ -21,5 +21,13 @@ namespace Domain.Models
             string trazenaOsoba = imeOsobe.ToLower();
             return imeMalimSl.Contains(trazenaOsoba);
         }
+
+        public override string? ProvjeraZasebnih()
+        {
+            if (string.IsNullOrWhiteSpace(ImeSlavljenika))
+                return "Ime slavljenika ne smije biti prazno.";
+
+            return null;
+        }
     }
 }
