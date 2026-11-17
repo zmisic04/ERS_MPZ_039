@@ -37,7 +37,7 @@ public sealed class ZapisServis
         if (greska != null)
          {
             _logger.Loguj("Neuspjesno dodavanje rodjendana: " + greska);
-            Result<Guid>.Failure("Zapis neispravan", greska);
+            return Result<Guid>.Failure("Zapis neispravan", greska);
         }
 
         Result sacuvano = _repozitorijum.Sacuvaj(rodjendan);
@@ -49,4 +49,34 @@ public sealed class ZapisServis
         _logger.Loguj("Dodat rodjendan, id: " + rodjendan.Id);
         return Result<Guid>.Success(rodjendan.Id);
     }
+
+    public Result<Guid> DodajGodisnjicu(DodajGodisnjicuZahtjev zahtjev)
+    {
+        Godisnjica godisnjica = new Godisnjica()
+        {
+            Naziv = zahtjev.Naziv,
+            Opis = zahtjev.Opis,
+            NazivDogadjaja = zahtjev.NazivDogadjaja,
+            Osobe = zahtjev.Osobe,
+            Datum = zahtjev.Datum,
+            PodsjetnikDaniPrije = zahtjev.PodsjetnikDaniPrije
+        };
+        string? greska = _validator.Provjera(godisnjica, DateTime.Today);
+        if (greska != null)
+        {
+            _logger.Loguj("Neuspjesno dodavanje godisnjice: " + greska);
+            return Result<Guid>.Failure("Zapis neispravan", greska);
+        }
+
+        Result sacuvano = _repozitorijum.Sacuvaj(godisnjica);
+        if (sacuvano.IsFailure)
+        {
+            _logger.Loguj("Neuspjesno cuvanje godisnjice: " + sacuvano.Error!.Message);
+            return Result<Guid>.Failure(sacuvano.Error.Code, sacuvano.Error.Message);
+        }
+
+        _logger.Loguj("Dodat rodjendan, id: " + godisnjica.Id);
+        return Result<Guid>.Success(godisnjica.Id);
+    }
+
 }
