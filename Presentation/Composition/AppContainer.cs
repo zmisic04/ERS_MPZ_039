@@ -6,6 +6,8 @@ using Infrastructure.Services;
 using Presentation.Console;
 using Presentation.Interfaces;
 
+using Domain.Validacija;
+
 namespace Presentation.Composition;
 
 // Sastavljanje zavisnosti na jednom mestu; Domain/Application ne biraju adaptere.
@@ -27,7 +29,7 @@ public sealed class AppContainer
             Io = new SystemConsoleIO(),
             Repozitorijum = repo,
             Logger = logger,
-            Servis = new ZapisServis(repo, logger)
+            Servis = new ZapisServis(repo, logger, new ValidatorZapisa())
         };
     }
 }
